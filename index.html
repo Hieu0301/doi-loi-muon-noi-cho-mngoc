@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Tỏ tình mngoc</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100dvh;
+            overflow: hidden;
+            background: linear-gradient(to bottom right, #fff6f9, #d6f0ff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 16px;
+        }
+
+        .image-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 100, 150, 0.7);
+            animation: floatUp 6s linear infinite;
+            font-size: 14px;
+            filter: blur(0.3px);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100vh) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        .image-row {
+            gap: 16px;
+            overflow: hidden;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .image-row img {
+            width: 260px;
+            height: 210px;
+            border-radius: 14px;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            animation: floatImg 4s ease-in-out infinite alternate;
+            transition: transform 0.6s ease, box-shadow 0.6s ease;
+        }
+
+        /* ///////////////////////// */
+        .image-row {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .scroll {
+            display: flex;
+            flex-wrap: nowrap;
+            min-width: 200%;
+            /* đảm bảo animation không bị cắt */
+            animation: scrollLeft 25s linear infinite;
+        }
+
+        .scroll.reverse {
+            animation-direction: reverse;
+        }
+
+        .image-row img {
+            flex-shrink: 0;
+            width: 240px;
+            height: 180px;
+            border-radius: 14px;
+            object-fit: cover;
+            margin-right: 16px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            animation: floatImg 4s ease-in-out infinite alternate;
+            transition: transform 0.6s ease, box-shadow 0.6s ease;
+        }
+
+        /* Animation cuộn ảnh */
+        @keyframes scrollLeft {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /*  */
+
+
+
+        @keyframes floatImg {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .scroll {
+            display: flex;
+            animation: scrollLeft 25s linear infinite;
+        }
+
+        .scroll.reverse {
+            animation-direction: reverse;
+        }
+
+        @keyframes scrollLeft {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .love-text {
+            text-align: center;
+            font-size: 1.4rem;
+            color: #ff4d6d;
+            margin-top: 24px;
+            min-height: 55px;
+            line-height: 1.5;
+            padding: 0 10px;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .love-text.show {
+            opacity: 1;
+        }
+
+        .next-btn {
+            background-color: #ff85a1;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 28px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s;
+            margin-top: 18px;
+        }
+
+        .next-btn:hover {
+            background-color: #ff5b85;
+            transform: scale(1.05);
+        }
+
+        /* Popup */
+        .popup {
+            position: fixed;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            padding: 24px;
+            z-index: 9999;
+            line-height: 1.6;
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .popup.show {
+            display: flex;
+        }
+
+        .popup>div {
+            max-width: 90%;
+            animation: zoomIn 0.5s ease;
+        }
+
+        .popup button {
+            margin-top: 20px;
+            padding: 12px 28px;
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ff85a1, #ff4d6d);
+            color: white;
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.7);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .popup button:active {
+            transform: scale(0.95);
+        }
+
+        /* Confetti */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: 0;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 430px) {
+            body {
+                height: 80vh;
+                padding: 10px;
+            }
+
+            .image-row img {
+                width: 120px;
+                height: 85px;
+            }
+
+            .love-text {
+                font-size: 1.1rem;
+                min-height: 45px;
+            }
+
+            .next-btn {
+                font-size: 0.9rem;
+                padding: 10px 24px;
+            }
+
+            .popup {
+                padding: 16px;
+                font-size: 1.05rem;
+            }
+
+            .popup button {
+                width: 80%;
+                max-width: 240px;
+                padding: 10px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="image-wrapper">
+        <!-- Dãy 1 -->
+        <div class="image-row">
+            <div class="scroll row">
+                <img src="./img/a1.jpg" alt="">
+                <img src="./img/a2.jpg" alt="">
+                <img src="./img/a3.jpg" alt="">
+                <img src="./img/a4.jpg" alt="">
+                <img src="./img/a5.jpg" alt="">
+                <img src="./img/a6.jpg" alt="">
+                <img src="./img/a7.jpg" alt="">
+                <img src="./img/a8.jpg" alt="">
+                <img src="./img/a9.jpg" alt="">
+                <img src="./img/a10.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- Dãy 2 -->
+        <div class="image-row">
+            <div class="scroll reverse">
+                <img src="./img/a10.jpg" alt="">
+                <img src="./img/a9.jpg" alt="">
+                <img src="./img/a8.jpg" alt="">
+                <img src="./img/a7.jpg" alt="">
+                <img src="./img/a6.jpg" alt="">
+                <img src="./img/a5.jpg" alt="">
+                <img src="./img/a4.jpg" alt="">
+                <img src="./img/a3.jpg" alt="">
+                <img src="./img/a2.jpg" alt="">
+                <img src="./img/a1.jpg" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="love-text" id="loveText"></div>
+    <button class="next-btn" id="nextBtn">Tiếp theo 💕</button>
+
+    <div class="popup" id="popup">
+        <div>Em làm bạn gái anh nhé? 💖</div>
+        <button id="yesBtn">Có 💗</button>
+    </div>
+
+    <script>
+    const texts = [
+        "Anh không phải người ưu tú, nhưng sẽ cố gắng ưu tú nhất so với những người đang thích em.",
+        "Anh không giỏi giang gì, nhưng sẽ cố gắng giỏi giang nhất trong mắt em.",
+        "Những ngày dài mệt mỏi thì trong suy nghĩ của anh bắt đầu có những hình ảnh của em.",
+        "Có lẽ anh đã thật sự thích em rồi..."
+    ];
+
+    let index = 0;
+    const loveText = document.getElementById('loveText');
+    const btn = document.getElementById('nextBtn');
+    const popup = document.getElementById('popup');
+    const yesBtn = document.getElementById('yesBtn');
+
+    let typingInterval = null;
+
+    function typeText(text, callback) {
+        // clear interval cũ nếu có
+        if (typingInterval) {
+            clearInterval(typingInterval);
+            typingInterval = null;
+        }
+
+        const chars = Array.from(text); // xử lý emoji / surrogate pairs đúng
+        let i = 0;
+        loveText.textContent = '';
+        loveText.classList.add('show');
+
+        // disable nút trong suốt quá trình gõ
+        btn.disabled = true;
+
+        typingInterval = setInterval(() => {
+            loveText.textContent += chars[i];
+            i++;
+            if (i >= chars.length) {
+                clearInterval(typingInterval);
+                typingInterval = null;
+                btn.disabled = false; // cho phép bấm lại khi xong
+                if (callback) callback();
+            }
+        }, 50);
+    }
+
+    // start lần đầu
+    typeText(texts[0]);
+
+    btn.addEventListener('click', () => {
+        // nếu vẫn đang gõ thì ignore (an toàn)
+        if (typingInterval) return;
+
+        index++;
+        if (index < texts.length) {
+            typeText(texts[index]);
+        } else {
+            popup.classList.add('show');
+        }
+    });
+
+    // Tim bay
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        const colors = ['#ff7aa2', '#ff4d6d', '#ffa3a3', '#f56ca0', '#ffb6c1'];
+        heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+        heart.innerHTML = '❤';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.fontSize = (Math.random() * 18 + 12) + 'px';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(createHeart, 300);
+
+    // Confetti
+    yesBtn.addEventListener('click', () => {
+        popup.classList.remove('show');
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.width = confetti.style.height = (Math.random() * 8 + 4) + 'px';
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360},100%,70%)`;
+            confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 4000);
+        }
+        loveText.textContent = "Yeee iu mngoc 💖";
+    });
+</script>
+
+</body>
+
+</html>
